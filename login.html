@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f1f3f1; /* Color de fondo principal */
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            background-color: #93BFCF; /* Nuevo color de fondo del contenedor */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        .login-container h2 {
+            color: #011318; /* Nuevo color del título (azul marino) */
+            margin-bottom: 20px;
+            text-transform: uppercase; /* Convertir el texto a mayúsculas */
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #063642; /* Color del texto de la etiqueta */
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #6096B4; /* Color del borde del input */
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #0284c7; /* Nuevo color de fondo del botón */
+            color: #fff; /* Color del texto del botón */
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #011318; /* Nuevo color de fondo del botón al pasar el ratón */
+        }
+
+        /* Estilos adicionales para el menú */
+        .menu li a {
+            color: #f66060; /* Color del texto del menú */
+            text-decoration: none;
+            font-size: 30px;
+            padding: 10px;
+            background-color: #bb2929; /* Color de fondo del menú */
+            padding-left: 2em;
+            font-family: 'Kalam', cursive;
+        }
+
+        .menu li a:hover {
+            background-color: #f66060; /* Color de fondo del menú al pasar el ratón */
+            font-size: 35px;
+            color: #fff; /* Color del texto del menú al pasar el ratón */
+            font-weight: bold;
+            border-radius: 15px;
+            animation: 0.5s infinite menu_opcion;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <h2>Iniciar Sesión</h2>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Usuario:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Contraseña:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+
+            <button type="button" onclick="submitForm()">Iniciar Sesión</button>
+        </form>
+        <div id="message" style="color: #f66060; margin-top: 10px;"></div>
+    </div>
+
+    <script>
+        function submitForm() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Ajusta la URL según la ruta correcta de tu servidor Flask
+            const serverUrl = "http://localhost:5000/login";  // Cambia esta URL
+
+            fetch(serverUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    document.getElementById('message').style.color = '#5bf846';
+                    document.getElementById('message').innerText = 'Inicio de sesión exitoso!';
+                } else {
+                    document.getElementById('message').style.color = '#bb2929';
+                    document.getElementById('message').innerText = 'Inicio de sesión fallido. Por favor, verifica tus credenciales.';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('message').style.color = '#bb2929';
+                document.getElementById('message').innerText = 'Ocurrió un error inesperado. Por favor, inténtalo de nuevo más tarde.';
+            });
+        }
+    </script>
+</body>
+
+</html>
+
